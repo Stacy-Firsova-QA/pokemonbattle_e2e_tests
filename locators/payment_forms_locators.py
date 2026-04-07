@@ -9,12 +9,18 @@ class PremiumBuyFormLocators:
 
 class PaymentCardFormLocators:
 
-    payment_number = (By.XPATH, "//div[@class='payment_receipt_open_button']/p[contains(text(), '200')]")
+    card_form_title = (By.CLASS_NAME, "payment_form_card_form_title")
     card_number_input = (By.CLASS_NAME, "card_number")
     card_date_input = (By.CLASS_NAME, "card_date")
     card_csv_input = (By.CLASS_NAME, "card_csv")
     card_name_input = (By.CLASS_NAME, "card_name")
     submit_button = (By.XPATH, "//button[text()='Оплатить']")
+    # ошибки и валидация полей при ошибках
+    error_input = (By.CSS_SELECTOR, "input.k_f_error")
+    error_input_text = (By.XPATH, "//span[text()='Неверный номер карты']")
+    submit_button_disabled = (By.CSS_SELECTOR, "button.disable")
+    error_date_input = (By.CSS_SELECTOR, "input.k_f_error")
+    error_date_input_text = (By.XPATH, "//span[text()='Неверный срок']")
 
 class ConfirmationPaymentFormLocators:
 
@@ -24,7 +30,7 @@ class ConfirmationPaymentFormLocators:
 
 class PaymentSuccessLocators:
 
-    payment_status = (By.XPATH, "//h3[text()='Покупка прошла успешно']")
+    payment_status = (By.CSS_SELECTOR, ".payment_status_top > h3")
     back = (By.XPATH, "//p[text()='Вернуться в магазин']")
 
 class PremiumSuccessLocators:

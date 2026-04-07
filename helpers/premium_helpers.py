@@ -3,7 +3,7 @@ import time
 from http import HTTPStatus
 
 
-def check_premium_status(api_session):
+def check_premium_status(api_session) -> bool:
     response_me = api_session.get(
         os.getenv("POKEMONBATTLE_HOST") + "/me",
     )
@@ -39,10 +39,12 @@ def buy_premium(api_session):
     assert body["message"] == "Транзакция успешна"
     assert body["days"] == 12
 
-# здесь через delay задаем паузу между вводимыми символами, которая будет применяться в time.sleep()
-def slow_type(element, text, delay=0.1):
-    element.click()
-    element.clear()
-    for char in text:
-        element.send_keys(char)
-        time.sleep(delay)
+def calculate_premium_price(days: int) -> int:
+    if days < 30:
+        return days * 30
+    elif 30 <= days < 180:
+        return days * 95
+    elif 180 <= days < 365:
+        return days * 90
+    else:
+        return days * 85
