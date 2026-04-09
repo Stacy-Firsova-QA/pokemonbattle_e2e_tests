@@ -1,0 +1,37 @@
+import pytest
+import os
+import requests
+import allure
+from helpers.premium_helpers import check_premium_status, cancel_premium, buy_premium
+
+# сделала одну сессию на все запросы, так как запросов апи будет пока немного и расширять логику пока нет смысла
+@pytest.fixture(scope="session")
+def api_session():
+    with allure.step("Создание API сессии"):
+        with requests.Session() as main_session:
+            main_session.headers.update({"trainer_token": os.getenv("POKEMONBATTLE_TOKEN")})
+            yield main_session
+
+@pytest.fixture()
+def prepare_for_buy_premium(api_session):
+    if check_premium_status(api_session):
+        cancel_premium(api_session)
+
+    assert check_premium_status(api_session) is False
+
+    yield
+
+    if check_premium_status(api_session):
+        cancel_premium(api_session)
+
+@pytest.fixture()
+def prepare_for_cancel_premium(api_session):
+    if check_premium_status(api_session) is False:
+        buy_premium(api_session)
+
+    assert check_premium_status(api_session) is True
+
+    yield
+
+    if check_premium_status(api_session):
+        cancel_premium(api_session)
