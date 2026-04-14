@@ -48,3 +48,14 @@ def calculate_premium_price(days: int) -> int:
         return days * 90
     else:
         return days * 85
+
+# нужно чтобы точно проверять, что премиум отменился/активировался, чтобы потом ui статус премиума совпадал с реальностью (а то они могут расходится - подготовка через апи может сработать а ui еще быть в неактуальном состоянии)
+def wait_premium_status(api_session, expected_status: bool, timeout: int = 10, poll: float = 1.0):
+    end_time = time.time() + timeout
+
+    while time.time() < end_time:
+        if check_premium_status(api_session) is expected_status:
+            return
+        time.sleep(poll)
+
+    raise AssertionError(f"Статус premium не стал {expected_status} за {timeout} секунд")
