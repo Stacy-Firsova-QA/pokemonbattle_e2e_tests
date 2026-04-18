@@ -5,7 +5,7 @@ from selenium.common.exceptions import TimeoutException, ElementNotInteractableE
 class BasePage:
     URL = None
 
-    def __init__(self, driver, timeout=6):
+    def __init__(self, driver, timeout=10):
         self.driver = driver
         self.wait = WebDriverWait(driver, timeout)
 

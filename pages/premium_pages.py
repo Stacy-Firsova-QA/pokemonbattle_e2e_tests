@@ -57,12 +57,13 @@ class PremiumPages(BasePage):
         self.type(PaymentCardFormLocators.card_name_input, card_name)
 
     def fill_card_form(self, card_number=CARD_NUMBER, card_date=CARD_DATE, card_csv=CARD_CSV, card_name=CARD_NAME):
-        self.fill_card_number()
-        self.fill_card_date()
-        self.fill_card_csv()
-        self.fill_card_name()
+        self.fill_card_number(card_number)
+        self.fill_card_date(card_date)
+        self.fill_card_csv(card_csv)
+        self.fill_card_name(card_name)
 
     def go_to_3ds_page(self):
+        self.find_clickable(PaymentCardFormLocators.submit_button)
         self.click(PaymentCardFormLocators.submit_button)
 
     def should_be_3ds_page(self):
@@ -87,8 +88,8 @@ class PremiumPages(BasePage):
         self.click(PremiumSuccessLocators.submit_button_ok)
 
     def should_show_invalid_card_number_errors(self):
-        self.find_element_visible(PaymentCardFormLocators.error_input)
-        self.find_element_visible(PaymentCardFormLocators.error_input_text)
+        self.find_element_visible(PaymentCardFormLocators.error_number_input)
+        self.find_element_visible(PaymentCardFormLocators.error_number_input_text)
 
     def should_show_invalid_card_date_errors(self):
         self.find_element_visible(PaymentCardFormLocators.error_date_input)
