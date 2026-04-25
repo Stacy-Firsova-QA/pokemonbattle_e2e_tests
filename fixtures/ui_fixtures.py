@@ -16,6 +16,8 @@ from pages.premium_pages import PremiumPages
 @pytest.fixture
 def driver():
     driver = webdriver.Chrome()
+    driver.set_window_position(0, 0)
+    driver.set_window_size(1920, 1200)
     yield driver
     driver.quit()
 

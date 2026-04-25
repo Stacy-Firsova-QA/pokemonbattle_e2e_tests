@@ -27,6 +27,32 @@ class PremiumPages(BasePage):
     def enter_days(self, days="1"):
         self.type(PremiumBuyFormLocators.days_input, days)
 
+    def wait_cost_days_visible(self):  # дожидаемся что после ввода дней скидка полностью видна (для скриншот-теста)
+        self.wait.until(
+            lambda d: d.find_element(*PremiumBuyFormLocators.cost_days).get_attribute("style").strip() == ""
+        )
+
+    def wait_date_input_errors_visible(self):
+        self.wait.until(
+            lambda d: d.find_element(*PaymentCardFormLocators.error_date_input).get_attribute("style").strip() == ""
+        )
+        self.wait.until(
+            lambda d: d.find_element(*PaymentCardFormLocators.error_date_input_text).get_attribute("style").strip() == ""
+        )
+
+    def wait_number_input_errors_visible(self):
+        self.wait.until(
+            lambda d: d.find_element(*PaymentCardFormLocators.error_number_input).get_attribute("style").strip() == ""
+        )
+        self.wait.until(
+            lambda d: d.find_element(*PaymentCardFormLocators.error_number_input_text).get_attribute(
+                "style").strip() == ""
+        )
+
+    def scroll_to_premium_form(self): # скролл для формы, которая не убирается в открытом браузере и обрезается (можно переиспользовать для других длинных форм)
+        form = self.find_element_visible(PremiumBuyFormLocators.main_form)
+        self.driver.execute_script("arguments[0].scrollIntoView({block: 'start', inline: 'nearest'});", form)
+
     def should_show_price(self):
         return self.find_element_visible(PremiumBuyFormLocators.price)
 
@@ -36,31 +62,50 @@ class PremiumPages(BasePage):
     def should_be_premium_card_form_page(self):
         self.find_element_visible(PaymentCardFormLocators.card_form_title)
 
+    def fill_card_number_with_js(self, card_number=CARD_NUMBER):
+        if card_number is not None:
+            card_number_input = self.find_clickable(PaymentCardFormLocators.card_number_input)
+            # обход ошибки при вводе номера карты через send_keys() - вставка номера в поле сразу целиком через JavaScript
+            self.driver.execute_script("arguments[0].value = arguments[1];", card_number_input, card_number)
+            self.click(PaymentCardFormLocators.card_number_input)
+
     def fill_card_number(self, card_number=CARD_NUMBER):
-        card_number_input = self.find_clickable(PaymentCardFormLocators.card_number_input)
-        # обход ошибки при вводе номера карты через send_keys() - вставка номера в поле сразу целиком через JavaScript
-        self.driver.execute_script("arguments[0].value = arguments[1];", card_number_input, card_number)
-        self.click(PaymentCardFormLocators.card_number_input)
+        if card_number is not None:
+            self.type(PaymentCardFormLocators.card_number_input, card_number)
 
     def fill_card_date(self, card_date=CARD_DATE):
-        self.click(PaymentCardFormLocators.card_date_input)
-        self.type(PaymentCardFormLocators.card_date_input, card_date)
+        if card_date is not None:
+            self.click(PaymentCardFormLocators.card_date_input)
+            self.type(PaymentCardFormLocators.card_date_input, card_date)
 
     def should_hide_card_date_errors(self):
         # ждем исчезновения ошибки, которая скорее всего возникает из-за предыдущей махинации с JavaScript (больше не смогла ничего придумать)
         self.element_invisible(PaymentCardFormLocators.error_date_input_text)
 
     def fill_card_csv(self, card_vscode=CARD_CSV):
-        self.type(PaymentCardFormLocators.card_csv_input, card_vscode)
+        if card_vscode is not None:
+            self.type(PaymentCardFormLocators.card_csv_input, card_vscode)
 
     def fill_card_name(self, card_name=CARD_NAME):
-        self.type(PaymentCardFormLocators.card_name_input, card_name)
+        if card_name is not None:
+            self.type(PaymentCardFormLocators.card_name_input, card_name)
 
     def fill_card_form(self, card_number=CARD_NUMBER, card_date=CARD_DATE, card_csv=CARD_CSV, card_name=CARD_NAME):
-        self.fill_card_number(card_number)
-        self.fill_card_date(card_date)
-        self.fill_card_csv(card_csv)
-        self.fill_card_name(card_name)
+        if card_number is not None:
+            self.fill_card_number_with_js(card_number)
+        if card_date is not None:
+            self.fill_card_date(card_date)
+        if card_csv is not None:
+            self.fill_card_csv(card_csv)
+        if card_name is not None:
+            self.fill_card_name(card_name)
+
+    # JS код который убирает фокус из инпутов (обводку) - для скриншот-тестов
+    def blur_active_elements(self):
+        self.driver.execute_script("document.activeElement.blur();")
+
+    def should_submit_button_be_active(self):
+        self.element_invisible(PaymentCardFormLocators.submit_button_disabled)
 
     def go_to_3ds_page(self):
         self.find_clickable(PaymentCardFormLocators.submit_button)
