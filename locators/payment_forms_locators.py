@@ -16,10 +16,10 @@ class PaymentCardFormLocators:
     card_name_input = (By.CLASS_NAME, "card_name")
     submit_button = (By.XPATH, "//button[text()='Оплатить']")
     # ошибки и валидация полей при ошибках
-    error_input = (By.CSS_SELECTOR, "input.k_f_error")
-    error_input_text = (By.XPATH, "//span[text()='Неверный номер карты']")
+    error_number_input = (By.CSS_SELECTOR, ".card_number.k_f_error")
+    error_number_input_text = (By.XPATH, "//span[text()='Неверный номер карты']")
     submit_button_disabled = (By.CSS_SELECTOR, "button.disable")
-    error_date_input = (By.CSS_SELECTOR, "input.k_f_error")
+    error_date_input = (By.CSS_SELECTOR, ".card_date.k_f_error")
     error_date_input_text = (By.XPATH, "//span[text()='Неверный срок']")
 
 class ConfirmationPaymentFormLocators:

@@ -8,6 +8,10 @@ from locators.pokemons_list_locators import PokemonListLocators
 from locators.trainer_page_locators import TrainerPageLocators
 from locators.payment_forms_locators import PremiumBuyFormLocators, PaymentCardFormLocators
 from data.test_trainer_data import TEST_TRAINER_ID
+from pages.trainer_page import TrainerPage
+from pages.login_page import LoginPage
+from pages.pokemons_page import PokemonsPage
+from pages.premium_pages import PremiumPages
 
 @pytest.fixture
 def driver():
@@ -16,55 +20,39 @@ def driver():
     driver.quit()
 
 @pytest.fixture()
-def authorization(driver):
-    driver.get(os.getenv("BASE_URL"))
+def authorized_user(driver):
+    login_page = LoginPage(driver)
+    login_page.open_page()
+    login_page.login()
 
-    login_input = driver.find_element(*LoginPageLocators.login_input)
-    login_input.send_keys(os.getenv("LOGIN"))
-    password_input = driver.find_element(*LoginPageLocators.password_input)
-    password_input.send_keys(os.getenv("PASSWORD"))
-
-    login_button = driver.find_element(*LoginPageLocators.login_button)
-    login_button.click()
-
-    yield driver
+    return driver
 
 @pytest.fixture()
-def open_trainer_page(authorization):
-    wait = WebDriverWait(authorization, 3)
+def open_trainer_page(authorized_user):
+    pokemons_page = PokemonsPage(authorized_user)
+    pokemons_page.should_be_opened()
+    pokemons_page.open_trainer_page()
 
-    trainer_card = wait.until(EC.element_to_be_clickable(PokemonListLocators.trainer_card_id))
-    trainer_card.click()
+    trainer_page = TrainerPage(authorized_user)
+    trainer_page.should_be_opened()
 
-    wait.until(EC.visibility_of_element_located(TrainerPageLocators.trainer_name))
-    assert authorization.current_url == f"{os.getenv('BASE_URL')}/trainer/{TEST_TRAINER_ID}"
-
-    yield authorization
-
-@pytest.fixture()
-def open_premium_page(open_trainer_page):
-    wait = WebDriverWait(open_trainer_page, 2)
-
-    premium_tab = wait.until(EC.element_to_be_clickable(TrainerPageLocators.to_premium))
-    premium_tab.click()
-
-    wait.until(EC.visibility_of_element_located(PremiumBuyFormLocators.profile_title))
-    assert open_trainer_page.current_url == os.getenv("BASE_URL") + "/premium"
-
-    yield open_trainer_page
+    return trainer_page
 
 @pytest.fixture()
-def open_premium_card_form_page(open_premium_page):
-    wait = WebDriverWait(open_premium_page, 2)
+def open_premium_form_page(open_trainer_page):
+    open_trainer_page.go_to_premium_page()
 
-    days_input = wait.until(EC.visibility_of_element_located(PremiumBuyFormLocators.days_input))
-    days_input.send_keys("2")
+    premium_form_page = PremiumPages(open_trainer_page.driver)
+    premium_form_page.should_be_opened()
 
-    submit_button = wait.until(EC.element_to_be_clickable(PremiumBuyFormLocators.submit_button))
-    submit_button.click()
+    return premium_form_page
 
-    wait.until(EC.visibility_of_element_located(PaymentCardFormLocators.card_form_title))
-    assert open_premium_page.current_url == os.getenv("BASE_URL") + "/payment/0"
+@pytest.fixture()
+def open_premium_card_form_page(open_premium_form_page):
+    open_premium_form_page.enter_days()
+    open_premium_form_page.go_to_payment_page()
+    open_premium_form_page.should_be_premium_card_form_page()
+    open_premium_form_page.should_have_url(f"{os.getenv('BASE_URL')}/payment/0")
 
-    yield open_premium_page
+    return open_premium_form_page
 
