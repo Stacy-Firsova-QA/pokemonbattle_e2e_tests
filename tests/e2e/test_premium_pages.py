@@ -5,6 +5,7 @@ import random
 from pages.pokemons_page import PokemonsPage
 from pages.premium_pages import PremiumPages
 from helpers.premium_helpers import check_premium_status, calculate_premium_price
+from data.payment_data import INVALID_CARD_NUMBER, INVALID_CARD_DATE
 
 @allure.title("Покупка премиума: разные сценарии оплаты через csv")
 @allure.description("Проверка 3 видов csv: корректного, некорректного, с недостатком средств на счету")
@@ -22,7 +23,7 @@ def test_buy_premium_different_csv_values(prepare_for_buy_premium, open_premium_
     premium_page.go_to_payment_page()
 
     premium_page.should_be_premium_card_form_page()
-    premium_page.fill_card_number()
+    premium_page.fill_card_number_with_js()
     premium_page.fill_card_date()
     premium_page.should_hide_card_date_errors()
     premium_page.fill_card_csv(card_csv)
@@ -71,7 +72,7 @@ def test_calculate_premium_price(prepare_for_buy_premium, open_premium_form_page
 @allure.severity(allure.severity_level.NORMAL)
 @pytest.mark.no_headless
 def test_invalid_card_number(prepare_for_buy_premium, open_premium_card_form_page):
-    open_premium_card_form_page.fill_card_number(card_number="4111111111111112")
+    open_premium_card_form_page.fill_card_number_with_js(card_number=INVALID_CARD_NUMBER)
     open_premium_card_form_page.fill_card_date()
     open_premium_card_form_page.should_show_invalid_card_date_errors()
     open_premium_card_form_page.fill_card_csv()
@@ -86,8 +87,8 @@ def test_invalid_card_number(prepare_for_buy_premium, open_premium_card_form_pag
 @allure.severity(allure.severity_level.NORMAL)
 @pytest.mark.no_headless
 def test_invalid_card_date(prepare_for_buy_premium, open_premium_card_form_page):
-    open_premium_card_form_page.fill_card_number()
-    open_premium_card_form_page.fill_card_date("1020")
+    open_premium_card_form_page.fill_card_number_with_js()
+    open_premium_card_form_page.fill_card_date(card_date=INVALID_CARD_DATE)
 
     open_premium_card_form_page.should_show_invalid_card_date_errors()
 

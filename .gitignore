@@ -18,3 +18,4 @@ __pycache__/
 # Директории с результатами
 allure-results
 allure-report
+__screenshot_diffs__

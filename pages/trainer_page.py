@@ -27,9 +27,3 @@ class TrainerPage(BasePage):
     def should_show_active_beginning_icon(self):
         # чуть попозже можно реализовать полную логику, если, допустим, у тренера нет подготовленной активной ачивки
         self.find_element_visible(TrainerPageLocators.beginning_icon_active)
-
-
-
-
-
-

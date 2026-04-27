@@ -2,16 +2,20 @@ from selenium.webdriver.common.by import By
 
 class PremiumBuyFormLocators:
 
+    main_form = (By.CSS_SELECTOR, ".k_page_main_premium > div.profile-mobile-wrapper")
     profile_title = (By.XPATH, "//div[contains(@class, 'k_page_main_premium')]/div[@class='profile-mobile-wrapper']/h1")
     days_input = (By.CLASS_NAME, "k_input_days")
+    cost_days = (By.CLASS_NAME, "k_skidka_premium")
     price = (By.CSS_SELECTOR, "div.k_price_premium > span")
     submit_button = (By.ID, "buy-premium")
 
 class PaymentCardFormLocators:
 
+    payment_form = (By.CLASS_NAME, "payment_page_content")
     card_form_title = (By.CLASS_NAME, "payment_form_card_form_title")
     card_number_input = (By.CLASS_NAME, "card_number")
     card_date_input = (By.CLASS_NAME, "card_date")
+    card_date_input_text = (By.XPATH, "//label[text()='Номер']")
     card_csv_input = (By.CLASS_NAME, "card_csv")
     card_name_input = (By.CLASS_NAME, "card_name")
     submit_button = (By.XPATH, "//button[text()='Оплатить']")
