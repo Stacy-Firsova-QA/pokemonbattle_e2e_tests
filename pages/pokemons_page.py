@@ -3,6 +3,7 @@ import os
 from locators.pokemons_list_locators import PokemonListLocators
 from pages.base_page import BasePage
 
+
 class PokemonsPage(BasePage):
     TITLE = "Битва Покемонов"
 

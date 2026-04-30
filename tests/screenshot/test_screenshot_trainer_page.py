@@ -1,9 +1,11 @@
 import allure
 from locators.trainer_page_locators import TrainerPageLocators
 
+
 @allure.title("Проверка верстки отдельного блока на странице тренера")
 @allure.tag("TrainerPage")
-@allure.description("Проверка блока с информацией о тренере со скрытием объектов: кол-во покеболов, уровень, ачивки")
+@allure.description(
+    "Проверка блока с информацией о тренере со скрытием объектов: кол-во покеболов, уровень, ачивки")
 def test_screenshot_trainer_page(open_trainer_page, screenshot_test):
     trainer_page = open_trainer_page
 
@@ -20,5 +22,3 @@ def test_screenshot_trainer_page(open_trainer_page, screenshot_test):
         ],
         threshold=0.05,
     )
-
-

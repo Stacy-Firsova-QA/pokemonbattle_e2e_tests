@@ -23,6 +23,8 @@ class LoginPage(BasePage):
         if pwd_value is None:
             raise ValueError("PASSWORD is not set")
 
-        self.type(LoginPageLocators.login_input, login_value, "Поле ввода логина")
-        self.type(LoginPageLocators.password_input, pwd_value, "Поле ввода пароля")
+        self.type(LoginPageLocators.login_input, login_value,
+                  "Поле ввода логина")
+        self.type(LoginPageLocators.password_input, pwd_value,
+                  "Поле ввода пароля")
         self.click(LoginPageLocators.login_button, "Кнопка входа")

@@ -6,9 +6,11 @@ from helpers.screenshot_helpers import hide_element
 
 pytest_plugins = ["fixtures.api_fixtures", "fixtures.ui_fixtures"]
 
+
 @pytest.fixture(scope="session", autouse=True)
 def load_env():
     load_dotenv()
+
 
 @pytest.fixture
 def screenshot_test(assert_snapshot, request, browser_name):
@@ -17,7 +19,8 @@ def screenshot_test(assert_snapshot, request, browser_name):
             name: str,
             element=None,
             threshold: float = 0.05,
-            baseline_dir: str = Path(request.node.fspath).parent.resolve() / "__snapshots__" / browser_name / sys.platform,
+            baseline_dir: str = Path(
+                request.node.fspath).parent.resolve() / "__snapshots__" / browser_name / sys.platform,
             diff_dir: str = "__screenshot_diffs__",
             mask: list = None
     ):
@@ -33,9 +36,10 @@ def screenshot_test(assert_snapshot, request, browser_name):
         if element is None:  # снимок всей страницы, если элемент не указан
             png = driver.get_screenshot_as_png()
         else:
-            if isinstance(element, tuple): # поиск элемента, если указан локатор для него
+            if isinstance(element,
+                          tuple):  # поиск элемента, если указан локатор для него
                 element = driver.find_element(*element)
-            png = element.screenshot_as_png # работа с WebElement напрямую, если передаем уже найденный элемент
+            png = element.screenshot_as_png  # работа с WebElement напрямую, если передаем уже найденный элемент
 
         try:
             assert_snapshot(png, name=name, threshold=threshold)
@@ -68,7 +72,8 @@ def screenshot_test(assert_snapshot, request, browser_name):
 
             # подсвечиваем различия красным цветом
             diff = ImageChops.difference(baseline, actual)
-            mask_img = diff.convert("L").point(lambda v: 255 if v > 10 else 0, mode="1")
+            mask_img = diff.convert("L").point(lambda v: 255 if v > 10 else 0,
+                                               mode="1")
             red = Image.new("RGB", actual.size, (255, 0, 0))
             highlight = actual.convert("RGB").copy()
             highlight.paste(red, mask=mask_img)

@@ -19,3 +19,6 @@ __pycache__/
 allure-results
 allure-report
 __screenshot_diffs__
+
+#MacOS
+.DS_Store
