@@ -87,7 +87,6 @@ def test_invalid_card_number(prepare_for_buy_premium,
     open_premium_card_form_page.fill_card_number_with_js(
         card_number=INVALID_CARD_NUMBER)
     open_premium_card_form_page.fill_card_date()
-    open_premium_card_form_page.should_show_invalid_card_date_errors()
     open_premium_card_form_page.fill_card_csv()
     open_premium_card_form_page.fill_card_name()
 

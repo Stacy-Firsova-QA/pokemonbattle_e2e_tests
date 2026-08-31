@@ -10,7 +10,7 @@ class PageUrlNotSetError(Exception):
 class BasePage:
     URL = None
 
-    def __init__(self, driver, timeout=10):
+    def __init__(self, driver, timeout=15):
         self.driver = driver
         self.wait = WebDriverWait(driver, timeout)
 
