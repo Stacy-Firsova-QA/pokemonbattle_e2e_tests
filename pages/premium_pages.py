@@ -1,7 +1,11 @@
 import os
 from pages.base_page import BasePage
-from locators.payment_forms_locators import PremiumBuyFormLocators, PaymentCardFormLocators, ConfirmationPaymentFormLocators, PaymentSuccessLocators, PremiumSuccessLocators, CancelPremiumLocators
-from data.payment_data import CARD_NUMBER, CARD_CSV, CARD_DATE, CARD_NAME, SECURE_CODE
+from locators.payment_forms_locators import PremiumBuyFormLocators, \
+    PaymentCardFormLocators, ConfirmationPaymentFormLocators, \
+    PaymentSuccessLocators, PremiumSuccessLocators, CancelPremiumLocators
+from data.payment_data import CARD_NUMBER, CARD_CSV, CARD_DATE, CARD_NAME, \
+    SECURE_CODE
+
 
 class PremiumPages(BasePage):
 
@@ -27,31 +31,44 @@ class PremiumPages(BasePage):
     def enter_days(self, days="1"):
         self.type(PremiumBuyFormLocators.days_input, days)
 
-    def wait_cost_days_visible(self):  # дожидаемся что после ввода дней скидка полностью видна (для скриншот-теста)
+    def wait_cost_days_visible(
+            self):  # дожидаемся что после ввода дней скидка полностью видна (для скриншот-теста)
         self.wait.until(
-            lambda d: d.find_element(*PremiumBuyFormLocators.cost_days).get_attribute("style").strip() == ""
+            lambda d: d.find_element(
+                *PremiumBuyFormLocators.cost_days).get_attribute(
+                "style").strip() == ""
         )
 
     def wait_date_input_errors_visible(self):
         self.wait.until(
-            lambda d: d.find_element(*PaymentCardFormLocators.error_date_input).get_attribute("style").strip() == ""
+            lambda d: d.find_element(
+                *PaymentCardFormLocators.error_date_input).get_attribute(
+                "style").strip() == ""
         )
         self.wait.until(
-            lambda d: d.find_element(*PaymentCardFormLocators.error_date_input_text).get_attribute("style").strip() == ""
+            lambda d: d.find_element(
+                *PaymentCardFormLocators.error_date_input_text).get_attribute(
+                "style").strip() == ""
         )
 
     def wait_number_input_errors_visible(self):
         self.wait.until(
-            lambda d: d.find_element(*PaymentCardFormLocators.error_number_input).get_attribute("style").strip() == ""
+            lambda d: d.find_element(
+                *PaymentCardFormLocators.error_number_input).get_attribute(
+                "style").strip() == ""
         )
         self.wait.until(
-            lambda d: d.find_element(*PaymentCardFormLocators.error_number_input_text).get_attribute(
+            lambda d: d.find_element(
+                *PaymentCardFormLocators.error_number_input_text).get_attribute(
                 "style").strip() == ""
         )
 
-    def scroll_to_premium_form(self): # скролл для формы, которая не убирается в открытом браузере и обрезается (можно переиспользовать для других длинных форм)
+    def scroll_to_premium_form(
+            self):  # скролл для формы, которая не убирается в открытом браузере и обрезается (можно переиспользовать для других длинных форм)
         form = self.find_element_visible(PremiumBuyFormLocators.main_form)
-        self.driver.execute_script("arguments[0].scrollIntoView({block: 'start', inline: 'nearest'});", form)
+        self.driver.execute_script(
+            "arguments[0].scrollIntoView({block: 'start', inline: 'nearest'});",
+            form)
 
     def should_show_price(self):
         return self.find_element_visible(PremiumBuyFormLocators.price)
@@ -64,9 +81,11 @@ class PremiumPages(BasePage):
 
     def fill_card_number_with_js(self, card_number=CARD_NUMBER):
         if card_number is not None:
-            card_number_input = self.find_clickable(PaymentCardFormLocators.card_number_input)
+            card_number_input = self.find_clickable(
+                PaymentCardFormLocators.card_number_input)
             # обход ошибки при вводе номера карты через send_keys() - вставка номера в поле сразу целиком через JavaScript
-            self.driver.execute_script("arguments[0].value = arguments[1];", card_number_input, card_number)
+            self.driver.execute_script("arguments[0].value = arguments[1];",
+                                       card_number_input, card_number)
             self.click(PaymentCardFormLocators.card_number_input)
 
     def fill_card_number(self, card_number=CARD_NUMBER):
@@ -90,7 +109,8 @@ class PremiumPages(BasePage):
         if card_name is not None:
             self.type(PaymentCardFormLocators.card_name_input, card_name)
 
-    def fill_card_form(self, card_number=CARD_NUMBER, card_date=CARD_DATE, card_csv=CARD_CSV, card_name=CARD_NAME):
+    def fill_card_form(self, card_number=CARD_NUMBER, card_date=CARD_DATE,
+                       card_csv=CARD_CSV, card_name=CARD_NAME):
         if card_number is not None:
             self.fill_card_number_with_js(card_number)
         if card_date is not None:
@@ -134,14 +154,17 @@ class PremiumPages(BasePage):
 
     def should_show_invalid_card_number_errors(self):
         self.find_element_visible(PaymentCardFormLocators.error_number_input)
-        self.find_element_visible(PaymentCardFormLocators.error_number_input_text)
+        self.find_element_visible(
+            PaymentCardFormLocators.error_number_input_text)
 
     def should_show_invalid_card_date_errors(self):
         self.find_element_visible(PaymentCardFormLocators.error_date_input)
-        self.find_element_visible(PaymentCardFormLocators.error_date_input_text)
+        self.find_element_visible(
+            PaymentCardFormLocators.error_date_input_text)
 
     def should_show_disabled_submit_button(self):
-        self.find_element_visible(PaymentCardFormLocators.submit_button_disabled)
+        self.find_element_visible(
+            PaymentCardFormLocators.submit_button_disabled)
 
     def cancel_premium(self):
         self.click(CancelPremiumLocators.cancel_premium_button)
@@ -154,16 +177,3 @@ class PremiumPages(BasePage):
 
     def back_to_trainer_page_after_cancellation(self):
         self.click(CancelPremiumLocators.back_button)
-
-
-
-
-
-
-
-
-
-
-
-
-

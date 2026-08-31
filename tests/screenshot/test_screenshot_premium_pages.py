@@ -1,8 +1,10 @@
 import allure
 import pytest
-from pages.premium_pages import PremiumPages
-from locators.payment_forms_locators import PremiumBuyFormLocators, PaymentCardFormLocators
-from data.payment_data import INVALID_CARD_NUMBER, INVALID_CARD_DATE, CARD_NUMBER, CARD_DATE, CARD_NAME, CARD_CSV
+from locators.payment_forms_locators import PremiumBuyFormLocators, \
+    PaymentCardFormLocators
+from data.payment_data import INVALID_CARD_NUMBER, INVALID_CARD_DATE, \
+    CARD_NUMBER, CARD_DATE, CARD_NAME, CARD_CSV
+
 
 @allure.title("Проверка верстки формы для выбора премиум")
 @allure.description("Проверка верстки для всех диапазонов и скидок для них")
@@ -13,7 +15,9 @@ from data.payment_data import INVALID_CARD_NUMBER, INVALID_CARD_DATE, CARD_NUMBE
     (230, "from_180_to_365_days"),
     (379, "gt_365_days"),
 ])
-def test_screenshot_premium_form_page(prepare_for_buy_premium, open_premium_form_page, screenshot_test, days, period_name):
+def test_screenshot_premium_form_page(prepare_for_buy_premium,
+                                      open_premium_form_page, screenshot_test,
+                                      days, period_name):
     premium_form_page = open_premium_form_page
     premium_form_page.enter_days(str(days))
     premium_form_page.wait_cost_days_visible()
@@ -26,24 +30,28 @@ def test_screenshot_premium_form_page(prepare_for_buy_premium, open_premium_form
         threshold=0.05,
     )
 
+
 @allure.title("Проверка верстки формы оплаты")
-@allure.description("Проверка верстки форм: пустая форма, заполненная форма, неверный номер карты, неверный срок карты")
+@allure.description(
+    "Проверка верстки форм: пустая форма, заполненная форма, неверный номер карты, неверный срок карты")
 @allure.tag("PremiumPages")
-@pytest.mark.parametrize("card_number, card_date, card_csv, card_name, form_name", [
-    (None, None, None, None, "empty_form"),
-    (CARD_NUMBER, CARD_DATE, CARD_CSV, CARD_NAME, "correct_form"),
-    (INVALID_CARD_NUMBER, None, None, None, "invalid_card_number"),
-    (None, INVALID_CARD_DATE, None, None, "invalid_card_date")],
-    ids=["empty_form", "correct_form", "Invalid_card_number", "Invalid_card_date"])
+@pytest.mark.parametrize(
+    "card_number, card_date, card_csv, card_name, form_name", [
+        (None, None, None, None, "empty_form"),
+        (CARD_NUMBER, CARD_DATE, CARD_CSV, CARD_NAME, "correct_form"),
+        (INVALID_CARD_NUMBER, None, None, None, "invalid_card_number"),
+        (None, INVALID_CARD_DATE, None, None, "invalid_card_date")],
+    ids=["empty_form", "correct_form", "Invalid_card_number",
+         "Invalid_card_date"])
 def test_screenshot_premium_card_form_page(
-    prepare_for_buy_premium,
-    open_premium_card_form_page,
-    screenshot_test,
-    card_number,
-    card_date,
-    card_csv,
-    card_name,
-    form_name
+        prepare_for_buy_premium,
+        open_premium_card_form_page,
+        screenshot_test,
+        card_number,
+        card_date,
+        card_csv,
+        card_name,
+        form_name
 ):
     premium_card_form_page = open_premium_card_form_page
 
@@ -82,6 +90,3 @@ def test_screenshot_premium_card_form_page(
         element=PaymentCardFormLocators.payment_form,
         threshold=0.05,
     )
-
-
-

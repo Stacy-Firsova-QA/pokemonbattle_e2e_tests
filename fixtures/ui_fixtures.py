@@ -1,17 +1,13 @@
-import pytest
 import os
+
+import pytest
 from selenium import webdriver
-from locators.login_page_locators import LoginPageLocators
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from locators.pokemons_list_locators import PokemonListLocators
-from locators.trainer_page_locators import TrainerPageLocators
-from locators.payment_forms_locators import PremiumBuyFormLocators, PaymentCardFormLocators
-from data.test_trainer_data import TEST_TRAINER_ID
-from pages.trainer_page import TrainerPage
+
 from pages.login_page import LoginPage
 from pages.pokemons_page import PokemonsPage
 from pages.premium_pages import PremiumPages
+from pages.trainer_page import TrainerPage
+
 
 @pytest.fixture
 def driver():

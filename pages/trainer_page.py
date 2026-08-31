@@ -4,6 +4,7 @@ from pages.base_page import BasePage
 from locators.trainer_page_locators import TrainerPageLocators
 from data.test_trainer_data import TEST_TRAINER_ID
 
+
 class TrainerPage(BasePage):
     # def __init__(self, driver):
     #     super().__init__(driver)
