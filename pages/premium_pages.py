@@ -1,10 +1,15 @@
 import os
+
+from data.payment_data import CARD_CSV, CARD_DATE, CARD_NAME, CARD_NUMBER, SECURE_CODE
+from locators.payment_forms_locators import (
+    CancelPremiumLocators,
+    ConfirmationPaymentFormLocators,
+    PaymentCardFormLocators,
+    PaymentSuccessLocators,
+    PremiumBuyFormLocators,
+    PremiumSuccessLocators,
+)
 from pages.base_page import BasePage
-from locators.payment_forms_locators import PremiumBuyFormLocators, \
-    PaymentCardFormLocators, ConfirmationPaymentFormLocators, \
-    PaymentSuccessLocators, PremiumSuccessLocators, CancelPremiumLocators
-from data.payment_data import CARD_NUMBER, CARD_CSV, CARD_DATE, CARD_NAME, \
-    SECURE_CODE
 
 
 class PremiumPages(BasePage):

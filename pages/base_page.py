@@ -1,7 +1,10 @@
-from selenium.webdriver.support.ui import WebDriverWait
+from selenium.common.exceptions import ElementNotInteractableException, TimeoutException
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException, \
-    ElementNotInteractableException
+from selenium.webdriver.support.ui import WebDriverWait
+
+
+class PageUrlNotSetError(Exception):
+    pass
 
 
 class BasePage:
@@ -18,7 +21,7 @@ class BasePage:
     # для каждой страницы метод будет переопределен, поэтому по сути именно метод из base_page не будет никогда использоваться
     def get_url(self):
         if not self.URL:
-            raise Exception("self.URL is not set")
+            raise PageUrlNotSetError("self.URL is not set")
         return self.URL
 
     def open_page(self):

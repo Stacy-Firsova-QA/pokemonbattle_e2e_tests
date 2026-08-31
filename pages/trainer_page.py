@@ -1,8 +1,8 @@
 import os
 
-from pages.base_page import BasePage
-from locators.trainer_page_locators import TrainerPageLocators
 from data.test_trainer_data import TEST_TRAINER_ID
+from locators.trainer_page_locators import TrainerPageLocators
+from pages.base_page import BasePage
 
 
 class TrainerPage(BasePage):

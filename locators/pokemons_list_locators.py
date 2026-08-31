@@ -1,4 +1,5 @@
 from selenium.webdriver.common.by import By
+
 from data.test_trainer_data import TEST_TRAINER_ID
 
 

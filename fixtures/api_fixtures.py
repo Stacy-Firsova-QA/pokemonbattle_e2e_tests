@@ -1,19 +1,24 @@
-import pytest
 import os
-import requests
+
 import allure
-from helpers.premium_helpers import check_premium_status, cancel_premium, \
-    buy_premium, wait_premium_status
+import pytest
+import requests
+
+from helpers.premium_helpers import (
+    buy_premium,
+    cancel_premium,
+    check_premium_status,
+    wait_premium_status,
+)
 
 
 # сделала одну сессию на все запросы, так как запросов апи будет пока немного и расширять логику пока нет смысла
 @pytest.fixture(scope="session")
 def api_session():
-    with allure.step("Создание API сессии"):
-        with requests.Session() as main_session:
-            main_session.headers.update(
-                {"trainer_token": os.getenv("POKEMONBATTLE_TOKEN")})
-            yield main_session
+    with allure.step("Создание API сессии"), requests.Session() as main_session:
+        main_session.headers.update(
+            {"trainer_token": os.getenv("POKEMONBATTLE_TOKEN")})
+        yield main_session
 
 
 @pytest.fixture()

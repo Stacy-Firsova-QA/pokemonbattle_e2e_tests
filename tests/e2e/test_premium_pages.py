@@ -1,12 +1,12 @@
-import allure
-import pytest
 import random
 
+import allure
+import pytest
+
+from data.payment_data import INVALID_CARD_DATE, INVALID_CARD_NUMBER
+from helpers.premium_helpers import calculate_premium_price, check_premium_status
 from pages.pokemons_page import PokemonsPage
 from pages.premium_pages import PremiumPages
-from helpers.premium_helpers import check_premium_status, \
-    calculate_premium_price
-from data.payment_data import INVALID_CARD_NUMBER, INVALID_CARD_DATE
 
 
 @allure.title("Покупка премиума: разные сценарии оплаты через csv")

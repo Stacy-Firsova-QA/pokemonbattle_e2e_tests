@@ -1,4 +1,5 @@
 import allure
+
 from locators.trainer_page_locators import TrainerPageLocators
 
 

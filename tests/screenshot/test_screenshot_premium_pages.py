@@ -1,9 +1,18 @@
 import allure
 import pytest
-from locators.payment_forms_locators import PremiumBuyFormLocators, \
-    PaymentCardFormLocators
-from data.payment_data import INVALID_CARD_NUMBER, INVALID_CARD_DATE, \
-    CARD_NUMBER, CARD_DATE, CARD_NAME, CARD_CSV
+
+from data.payment_data import (
+    CARD_CSV,
+    CARD_DATE,
+    CARD_NAME,
+    CARD_NUMBER,
+    INVALID_CARD_DATE,
+    INVALID_CARD_NUMBER,
+)
+from locators.payment_forms_locators import (
+    PaymentCardFormLocators,
+    PremiumBuyFormLocators,
+)
 
 
 @allure.title("Проверка верстки формы для выбора премиум")

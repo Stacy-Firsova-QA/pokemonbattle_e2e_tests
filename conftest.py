@@ -1,7 +1,12 @@
-import sys, os, io, pytest
-from PIL import Image, ImageChops
+import io
+import os
+import sys
 from pathlib import Path
+
+import pytest
 from dotenv import load_dotenv
+from PIL import Image, ImageChops
+
 from helpers.screenshot_helpers import hide_element
 
 pytest_plugins = ["fixtures.api_fixtures", "fixtures.ui_fixtures"]
@@ -22,14 +27,14 @@ def screenshot_test(assert_snapshot, request, browser_name):
             baseline_dir: str = Path(
                 request.node.fspath).parent.resolve() / "__snapshots__" / browser_name / sys.platform,
             diff_dir: str = "__screenshot_diffs__",
-            mask: list = None
+            mask: list | None = None
     ):
         # маскируем динамические элементы (опционально)
         if mask:
             for loc in mask:
                 try:
                     hide_element(driver, loc)
-                except Exception:
+                except Exception:  # noqa: BLE001, S110 - masking is best-effort; a locator that doesn't match shouldn't fail the whole screenshot
                     pass
 
         # снимок страницы или узла
